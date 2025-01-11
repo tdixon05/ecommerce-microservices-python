@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  user-service:
+    image: yourusername/user-service:prod
+    ports:
+      - "80:5000"  # Map port 5000 inside the container to port 80 for external access
+    environment:
+      - ENV=production
+    deploy:
+      replicas: 3  # Add replicas for load balancing
+      resources:
+        limits:
+          cpus: "1"
+          memory: "512M"
+      restart_policy:
+        condition: on-failure
+
+  product-service:
+    image: yourusername/product-service:prod
+    ports:
+      - "81:5000"
+    environment:
+      - ENV=production
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: "1"
+          memory: "512M"
+      restart_policy:
+        condition: on-failure
+
+  order-service:
+    image: yourusername/order-service:prod
+    ports:
+      - "82:5000"
+    environment:
+      - ENV=production
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: "1"
+          memory: "512M"
+      restart_policy:
+        condition: on-failure

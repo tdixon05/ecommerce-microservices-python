@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  user-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: user-service
+    ports:
+      - "5101:5000"  # Different port for staging
+    environment:
+      - ENV=staging
+      - SERVICE_NAME=User Service
+
+  product-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: product-service
+    ports:
+      - "5102:5000"  # Different port for staging
+    environment:
+      - ENV=staging
+      - SERVICE_NAME=Product Service
+
+  order-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: order-service
+    ports:
+      - "5103:5000"  # Different port for staging
+    environment:
+      - ENV=staging
+      - SERVICE_NAME=Order Service

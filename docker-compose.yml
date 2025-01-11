@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  user-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: user-service
+    ports:
+      - "5001:5000"
+    environment:
+      - SERVICE_NAME=User Service
+
+  product-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: product-service
+    ports:
+      - "5002:5000"
+    environment:
+      - SERVICE_NAME=Product Service
+
+  order-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: order-service
+    ports:
+      - "5003:5000"
+    environment:
+      - SERVICE_NAME=Order Service
