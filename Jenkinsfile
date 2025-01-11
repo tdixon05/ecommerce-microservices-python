@@ -10,13 +10,13 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker-compose -f docker-compose.staging.yml build'
+                sh '/usr/local/bin/docker-compose -f docker-compose.staging.yml build'
             }
         }
 
         stage('Start Services for Testing') {
             steps {
-                sh 'docker-compose -f docker-compose.staging.yml up -d'
+                sh '/usr/local/bin/docker-compose -f docker-compose.staging.yml up -d'
             }
         }
 
@@ -29,7 +29,7 @@ pipeline {
 
         stage('Stop Services') {
             steps {
-                sh 'docker-compose -f docker-compose.staging.yml down'
+                sh '/usr/local/bin/docker-compose -f docker-compose.staging.yml down'
             }
         }
 
@@ -38,7 +38,7 @@ pipeline {
                 message "Approve deployment to production?"
             }
             steps {
-                sh 'docker-compose -f docker-compose.prod.yml up -d'
+                sh '/usr/local/bin/docker-compose -f docker-compose.prod.yml up -d'
             }
         }
     }
