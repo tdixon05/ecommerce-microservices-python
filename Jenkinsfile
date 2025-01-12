@@ -1,6 +1,8 @@
 pipeline {
     agent any
 
+    DOCKER_CONFIG = credentials('docker-config-id')
+
     stages {
         stage('Checkout Code') {
             steps {
