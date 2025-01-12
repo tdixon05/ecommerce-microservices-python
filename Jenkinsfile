@@ -1,7 +1,10 @@
 pipeline {
     agent any
 
-    DOCKER_CONFIG = credentials('docker-config-id')
+    environment {
+        // Use Jenkins Credentials to securely reference Docker config
+        DOCKER_CONFIG = credentials('docker-config-id') // Replace 'docker-config-id' with the ID of your Jenkins credential
+    }
 
     stages {
         stage('Checkout Code') {
