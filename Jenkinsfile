@@ -10,10 +10,11 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                withCredentials([file(credentialsId: 'docker-config-id', variable: 'DOCKER_CONFIG')]) {
+                withCredentials([file(credentialsId: 'docker-config-id', variable: 'DOCKER_CONFIG_FILE')]) {
                     script {
                         echo "Building Docker Images..."
-                        sh '/usr/local/bin/docker-compose -f docker-compose.staging.yml build'
+                        // Set DOCKER_CONFIG explicitly
+                        sh 'export DOCKER_CONFIG=$(dirname "$DOCKER_CONFIG_FILE") && /usr/local/bin/docker-compose -f docker-compose.staging.yml build'
                     }
                 }
             }
