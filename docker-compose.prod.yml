@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   user-service:
-    image: yourusername/user-service:prod
+    image: tdixon05/user-service:latest
     ports:
       - "80:5000"  # Map port 5000 inside the container to port 80 for external access
     environment:
@@ -17,7 +17,7 @@ services:
         condition: on-failure
 
   product-service:
-    image: yourusername/product-service:prod
+    image: tdixon05/product-service:latest
     ports:
       - "81:5000"
     environment:
@@ -32,7 +32,7 @@ services:
         condition: on-failure
 
   order-service:
-    image: yourusername/order-service:prod
+    image: tdixon05/order-service:latest
     ports:
       - "82:5000"
     environment:
