@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        // Use Jenkins Credentials to securely reference Docker config
-        DOCKER_CONFIG = credentials('docker-config-id') // Replace 'docker-config-id' with the ID of your Jenkins credential
-    }
-
     stages {
         stage('Checkout Code') {
             steps {
@@ -15,26 +10,40 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh '/usr/local/bin/docker-compose -f docker-compose.staging.yml build'
+                withCredentials([file(credentialsId: 'docker-config-id', variable: 'DOCKER_CONFIG')]) {
+                    script {
+                        echo "Building Docker Images..."
+                        sh '/usr/local/bin/docker-compose -f docker-compose.staging.yml build'
+                    }
+                }
             }
         }
 
         stage('Start Services for Testing') {
             steps {
-                sh '/usr/local/bin/docker-compose -f docker-compose.staging.yml up -d'
+                script {
+                    echo "Starting Services for Testing..."
+                    sh '/usr/local/bin/docker-compose -f docker-compose.staging.yml up -d'
+                }
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'sleep 10' // Wait for services to initialize
-                sh 'python test-app.py'
+                script {
+                    echo "Running Tests..."
+                    sh 'sleep 10'
+                    sh 'python test-app.py'
+                }
             }
         }
 
         stage('Stop Services') {
             steps {
-                sh '/usr/local/bin/docker-compose -f docker-compose.staging.yml down'
+                script {
+                    echo "Stopping Services..."
+                    sh '/usr/local/bin/docker-compose -f docker-compose.staging.yml down'
+                }
             }
         }
 
@@ -43,14 +52,18 @@ pipeline {
                 message "Approve deployment to production?"
             }
             steps {
-                sh '/usr/local/bin/docker-compose -f docker-compose.prod.yml up -d'
+                script {
+                    echo "Deploying to Production..."
+                    sh '/usr/local/bin/docker-compose -f docker-compose.prod.yml up -d'
+                }
             }
         }
     }
 
     post {
         always {
-            cleanWs() // Clean up workspace after build
+            echo "Cleaning up workspace..."
+            cleanWs()
         }
     }
 }
